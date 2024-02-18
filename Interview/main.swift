@@ -44,8 +44,27 @@ print(vowelCount("şemsi paşa pasajında sesi büzüşesiceler")) // 16
  */
 
 public func NumberAddition(_ str: String) -> Int {
-    let numbers = str.components(separatedBy: CharacterSet.decimalDigits.inverted)
+    let numbers = str.components(separatedBy: CharacterSet.decimalDigits.inverted) // Decimal harici karakterleri alıyor
     return numbers.compactMap { Int($0) }.reduce(0, +)
 }
 
 print(NumberAddition("K23RAKTER34DENEM1E")) // 23 + 34 + 1 = 58
+
+// MARK: QUESTION 3 - Simple Mode
+
+/*
+ Find mode in array (frequently repeated term), Mode yoksa -1 döndürsün
+ Dizi içinde en çok tekrar eden sayıyı bulma
+ */
+
+public func SimpleMode(_ arr: [Int]) -> Int {
+    var dict = [Int: Int]()
+    for num in arr {
+        dict[num, default: 0] += 1
+    }
+    let max = dict.values.max()
+    return max == 1 ? -1 : dict.first { $0.value == max }!.key
+}
+
+print(SimpleMode([10, 4, 5, 2]))
+
