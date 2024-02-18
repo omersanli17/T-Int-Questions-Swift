@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: QUESTION 1 VOWEL COUNT
+
 /*
 Have the function VowelCount (str) take the str string parameter being passed and
 return the number of vowels the string contains
@@ -14,6 +16,7 @@ return the number of vowels the string contains
  
  Ünlü harflerin sayısını return ettirme
 */
+
 
 public func vowelCount(_ str: String) -> Int {
     let vowels: Set<Character> = ["a", "e", "ı" ,"i", "o", "u", "ü"]
