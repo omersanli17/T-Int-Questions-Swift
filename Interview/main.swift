@@ -7,27 +7,28 @@
 
 import Foundation
 
+
 // MARK: QUESTION 1 VOWEL COUNT
 
 /*
-Have the function VowelCount (str) take the str string parameter being passed and
-return the number of vowels the string contains
-
+ Have the function VowelCount (str) take the str string parameter being passed and
+ return the number of vowels the string contains
+ 
  Ünlü harflerin sayısını return ettirme
-*/
+ */
 
 // MARK: QUESTION 1 - VOWEL COUNT
 
 public func vowelCount(_ str: String) -> Int {
     let vowels: Set<Character> = ["a", "e", "ı" ,"i", "o", "u", "ü"]
     var count = 0
-
+    
     for char in str.lowercased() {
         if vowels.contains(char) {
             count += 1
         }
     }
-
+    
     return count
 }
 
@@ -68,3 +69,24 @@ public func SimpleMode(_ arr: [Int]) -> Int {
 
 print(SimpleMode([10, 4, 5, 2]))
 
+
+// MARK: QUESTION 4 - MINIMUM DIFFERENCE SUM
+
+/*
+ Given an od number arr, rearrange them so that
+ the sum of the absolute differences of all adjacent
+ elements is minimized. Then, compute the sum of
+ those absolute differences.
+ */
+
+public func minimumDifferenceSum(_ arr: [Int]) -> Int {
+    var absSum = 0
+    guard arr.count > 1 else { return absSum }
+    let sortedArr = arr.sorted()
+    for i in 0..<sortedArr.count - 1 {
+        absSum += abs(sortedArr[i] - sortedArr[i + 1])
+    }
+    return absSum
+}
+
+print(minimumDifferenceSum([1, 2, 3, 56])) // 55;  1 + 1 + 53
