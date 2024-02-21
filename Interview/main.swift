@@ -90,3 +90,37 @@ public func minimumDifferenceSum(_ arr: [Int]) -> Int {
 }
 
 print(minimumDifferenceSum([1, 2, 3, 56])) // 55;  1 + 1 + 53
+
+
+// MARK: QUESTION 5 - UNIQUE WAYS TO CLIMB STAIRS - AMAZON Interview Question
+
+/*
+There's a staircase with N steps, and you can climb 1 or 2 steps at a time. Given N, write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
+
+For example, if N is 4, then there are 5 unique ways:
+
+1, 1, 1, 1
+2, 1, 1
+1, 2, 1
+1, 1, 2
+2, 2
+What if, instead of being able to climb 1 or 2 steps at a time, you could climb any number from a set of positive integers X? For example, if X = {1, 3, 5}, you could climb 1, 3, or 5 steps at a time. Generalize your function to take in X.
+X is the array that user write to use functiion
+ */
+
+public func staircase(_ n: Int, _ X: [Int]) -> Int {
+    var cache = [Int](repeating: 0, count: n + 1)
+    cache[0] = 1
+    
+    for i in 1...n {
+        for x in X where i - x >= 0 {
+            cache[i] += cache[i - x]
+        }
+    }
+    
+    return cache[n]
+}
+
+print(staircase(4, [1, 3, 5])) // 3 , 1-1-1-1 , 1-4, 3-1
+
+
