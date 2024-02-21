@@ -95,6 +95,9 @@ print(minimumDifferenceSum([1, 2, 3, 56])) // 55;  1 + 1 + 53
 // MARK: QUESTION 5 - UNIQUE WAYS TO CLIMB STAIRS - AMAZON Interview Question
 
 /*
+Merdiven basamak sayısı verildi; 1 veya 2 adım atarak kaç farklı şekilde çıkabileceğini bulabilirsin 
+Eğer basamakları verilen dizi içerisindeki sayılarla çıkılabiliyorsa, kaç farklı yol vardır çıkmak için ? 
+
 There's a staircase with N steps, and you can climb 1 or 2 steps at a time. Given N, write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
 
 For example, if N is 4, then there are 5 unique ways:
