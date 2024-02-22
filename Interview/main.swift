@@ -120,10 +120,121 @@ public func staircase(_ n: Int, _ X: [Int]) -> Int {
             cache[i] += cache[i - x]
         }
     }
+    print(cache)
     
     return cache[n]
 }
 
 print(staircase(4, [1, 3, 5])) // 3 , 1-1-1-1 , 1-4, 3-1
+
+
+// MARK: QUESTION 6 - MAXIMUM PASSENGERS
+
+/*
+Matris formatında yol pathi veriliyor. Taksici tren istasyonuna gidecek dönüşte yolcu alabilir ve ilk noktasına geri dönecek
+Giderken sağa ve aşağı, dönerken sola ve yukarı gelebilecek.
+ -1'li alana giremeyecek
+ Yolcular 1 olarak gözüküyor, yolcuyu aldıktan sonra matris elemanı 0 olacak.
+ Bu koşulları sağlarken alınacak en yüksek yolcu sayısını bul.
+*/
+
+func cost(grid: [[Int]], row1: Int, col1: Int, row2: Int, col2: Int) -> Int {
+    if row1 == row2 && col1 == col2 {
+        return grid[row1][col1] == 1 ? 1 : 0
+    }
+
+    var ans = 0
+
+    if grid[row1][col1] == 1 {
+        ans += 1
+    }
+
+    if grid[row2][col2] == 1 {
+        ans += 1
+    }
+
+    return ans
+}
+
+func solve(n: Int, m: Int, grid: [[Int]], dp: inout [[[Int]]], row1: Int, col1: Int, row2: Int) -> Int {
+    let col2 = (row1 + col1) - row2
+
+    if row1 == n - 1 && col1 == m - 1 && row2 == n - 1 && col2 == m - 1 {
+        return 0
+    }
+
+    if row1 >= n || col1 >= m || row2 >= n || col2 >= m {
+        return -1 * Int.max
+    }
+
+    if dp[row1][col1][row2] != -1 {
+        return dp[row1][col1][row2]
+    }
+
+    var ch1 = -1 * Int.max
+    var ch2 = -1 * Int.max
+    var ch3 = -1 * Int.max
+    var ch4 = -1 * Int.max
+
+    if col1 + 1 < m && row2 + 1 < n && grid[row1][col1 + 1] != -1 && grid[row2 + 1][col2] != -1 {
+        ch1 = cost(grid: grid, row1: row1, col1: col1 + 1, row2: row2 + 1, col2: col2) + solve(n: n, m: m, grid: grid, dp: &dp, row1: row1, col1: col1 + 1, row2: row2 + 1)
+    }
+
+    if col1 + 1 < m && col2 + 1 < m && grid[row1][col1 + 1] != -1 && grid[row2][col2 + 1] != -1 {
+        ch2 = cost(grid: grid, row1: row1, col1: col1 + 1, row2: row2, col2: col2 + 1) + solve(n: n, m: m, grid: grid, dp: &dp, row1: row1, col1: col1 + 1, row2: row2)
+    }
+
+    if row1 + 1 < n && col2 + 1 < m && grid[row1 + 1][col1] != -1 && grid[row2][col2 + 1] != -1 {
+        ch3 = cost(grid: grid, row1: row1 + 1, col1: col1, row2: row2, col2: col2 + 1) + solve(n: n, m: m, grid: grid, dp: &dp, row1: row1 + 1, col1: col1, row2: row2)
+    }
+
+    if row1 + 1 < n && row2 + 1 < n && grid[row1 + 1][col1] != -1 && grid[row2 + 1][col2] != -1 {
+        ch4 = cost(grid: grid, row1: row1 + 1, col1: col1, row2: row2 + 1, col2: col2) + solve(n: n, m: m, grid: grid, dp: &dp, row1: row1 + 1, col1: col1, row2: row2 + 1)
+    }
+
+    dp[row1][col1][row2] = max(ch1, max(ch2, max(ch3, ch4)))
+    return dp[row1][col1][row2]
+}
+
+func initializeDp(dp: inout [[[Int]]], item: Int) {
+    for i in 0..<6 {
+        for j in 0..<6 {
+            for k in 0..<6 {
+                dp[i][j][k] = item
+            }
+        }
+    }
+}
+
+func collectMax(n: Int, m: Int, grid: inout [[Int]]) -> Int {
+    var ans = 0
+    var dp = [[[Int]]](repeating: [[Int]](repeating: [Int](repeating: 0, count: 6), count: 6), count: 6)
+    initializeDp(dp: &dp, item: -1)
+
+    if grid[n - 1][m - 1] == -1 || grid[0][0] == -1 {
+        ans = -1 * Int.max
+    }
+
+    if grid[0][0] == 1 {
+        ans += 1
+    }
+    grid[0][0] = 0
+
+    if grid[n - 1][m - 1] == 1 {
+        ans += 1
+    }
+    grid[n - 1][m - 1] = 0
+
+    ans += solve(n: n, m: m, grid: grid, dp: &dp, row1: 0, col1: 0, row2: 0)
+    return max(ans, 0)
+}
+
+let n = 3
+let m = 3
+var arr = [[0, 1, -1], [1, 0, -1], [1, 1, 1]]
+
+let result = collectMax(n: n, m: m, grid: &arr)
+print(result)
+
 
 
