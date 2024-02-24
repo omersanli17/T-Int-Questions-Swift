@@ -237,4 +237,67 @@ let result = collectMax(n: n, m: m, grid: &arr)
 print(result)
 
 
+// MARK: QUESTION 7 GOOGLE Interview Anagram
+
+/*
+ Given a word W and a string S, find all starting indices in S which are anagrams of W.
+ // Angaram: a word, phrase, or name formed by rearranging the letters of another, such as spar, formed from rasp.
+ For example, given that W is "ab", and S is "abxaba", return 0, 3, and 4.
+ */
+
+func getCharFrequency(_ str: String) -> [Character: Int] {
+    var frequency: [Character: Int] = [:]
+    for char in str {
+        frequency[char, default: 0] += 1
+    }
+    return frequency
+}
+
+func getWordStartIndices(word: String, string: String) -> [Int] {
+    let wordLen = word.count
+    let strLen = string.count
+    let charNeededMaster = getCharFrequency(word)
+    var charNeeded = charNeededMaster
+    var curr = 0
+    var startingIndices: [Int] = []
+
+    if wordLen > strLen || wordLen == 0 {
+        return []
+    }
+
+    while curr < strLen {
+        var i = curr
+        while i < strLen {
+            let char = string[string.index(string.startIndex, offsetBy: i)]
+
+            if charNeeded[char] == nil {
+                curr = i
+                charNeeded = charNeededMaster
+                break
+            } else {
+                charNeeded[char]! -= 1
+                if charNeeded[char] == 0 {
+                    charNeeded[char] = nil
+                    if charNeeded.isEmpty {
+                        startingIndices.append(curr)
+                        curr = i - 1
+                        charNeeded = charNeededMaster
+                        break
+                    }
+                }
+            }
+
+            i += 1
+        }
+
+        curr += 1
+    }
+
+    return startingIndices
+}
+
+print(getWordStartIndices(word: "ab", string: "abxaba"))  //  [0, 3, 4]
+print(getWordStartIndices(word: "tac", string: "cataract")) //  [0, 5]
+
+
 
